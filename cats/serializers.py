@@ -1,37 +1,65 @@
+import datetime as dt
+import webcolors
 from rest_framework import serializers
 
 from .models import Achievement, AchievementCat, Cat, Owner
 
 
+CHOICES = (
+        ('Gray', 'Серый'),
+        ('Black', 'Чёрный'),
+        ('White', 'Белый'),
+        ('Ginger', 'Рыжий'),
+        ('Mixed', 'Смешанный'),
+    )
+
+
 class AchievementSerializer(serializers.ModelSerializer):
+    achievement_name = serializers.CharField(source='name')
 
     class Meta:
         model = Achievement
-        fileds = ('id', 'name')
+        fields = ('id', 'achievement_name')
+
+
+class Hex2NameColor(serializers.Field):
+
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, data):
+        try:
+            data = webcolors.hex_to_name(data)
+        except ValueError:
+            raise serializers.ValidationError('Для этого цвета нет имени')
+        return data
 
 
 class CatSerializer(serializers.ModelSerializer):
-    owner = serializers.StringRelatedField(read_only=True)
     achievements = AchievementSerializer(many=True, required=False)
+    age = serializers.SerializerMethodField()
+    color = Hex2NameColor()
 
     class Meta:
         model = Cat
-        fields = ('id', 'name', 'color', 'birth_year', 'owner', 'achievements')
+        fields = ('id', 'name', 'color', 'birth_year', 'owner', 'achievements',
+                  'age')
 
-    def create(self, validate_data):
-        if 'achivements' not in validate_data:
-            cat = Cat.objects.create(**validate_data)
+    def get_age(self, obj):
+        return dt.datetime.now().year - obj.birth_year
+
+    def create(self, validated_data):
+        if 'achievements' not in self.initial_data:
+            cat = Cat.objects.create(**validated_data)
             return cat
+        achievements = validated_data.pop('achievements')
+        cat = Cat.objects.create(**validated_data)
 
-        achivements = validate_data.pop('achivements')
-        cat = Cat.objects.create(**validate_data)
-        for achivement in achivements:
-            current_achivement, status = Achievement.objects.get_or_create(
-                **achivement
-            )
+        for achievement in achievements:
+            current_achievement, status = Achievement.objects.get_or_create(
+                **achievement)
             AchievementCat.objects.create(
-                achivement=current_achivement, cat=cat
-            )
+                achievement=current_achievement, cat=cat)
         return cat
 
 

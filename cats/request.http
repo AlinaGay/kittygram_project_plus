@@ -24,22 +24,22 @@ POST http://127.0.0.1:8000/cats/
 Content-Type: application/json
 
 {
-    "name": "Kesha",
-    "color": "black",
-    "birth_year": 2015,
-    "owner": 1
+    "name": "Bars",
+    "color": "#228B22",
+    "birth_year": 2019,
+    "owner": 1,
+    "achievements": [
+        {"achievement_name": "Broke a vase"}
+    ]
 }
 
 ###
 
-DELETE http://127.0.0.1:8000/cats/
+DELETE http://127.0.0.1:8000/cats/4/
 Content-Type: application/json
 
 {
-    "name": "Kesha",
-    "color": "black",
-    "birth_year": 2015
-}
+  }
 
 ###
 
@@ -47,5 +47,7 @@ PATCH  http://127.0.0.1:8000/cats/3/
 Content-Type: application/json
 
 {
-    "color": "orange"
+    "achievements": [
+        {"achievement_name": "Broke a vase"}
+    ]
 }
