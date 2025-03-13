@@ -24,18 +24,18 @@ POST http://127.0.0.1:8000/cats/
 Content-Type: application/json
 
 {
-    "name": "Bars",
-    "color": "#228B22",
-    "birth_year": 2019,
+    "name": "Matros",
+    "color": "Mixed",
+    "birth_year": 2022,
     "owner": 1,
     "achievements": [
-        {"achievement_name": "Broke a vase"}
+        {"achievement_name": "Cought a mouse"}
     ]
 }
 
 ###
 
-DELETE http://127.0.0.1:8000/cats/4/
+DELETE http://127.0.0.1:8000/cats/14/
 Content-Type: application/json
 
 {
