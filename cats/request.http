@@ -6,11 +6,25 @@ GET http://127.0.0.1:8000/cats/1/
 
 ###
 
+GET http://127.0.0.1:8000/mycats/
+
+###
+
 GET http://127.0.0.1:8000/owners/
 
 ###
 
 GET http://127.0.0.1:8000/cats/recent-white-cats/
+
+###
+
+POST http://127.0.0.1:8000/api-token-auth/
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "change_me"
+}
 
 ###
 
