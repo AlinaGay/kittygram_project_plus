@@ -28,6 +28,26 @@ Content-Type: application/json
 
 ###
 
+POST http://127.0.0.1:8000/auth/users/
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "password": "Changeme!1"
+}
+
+###
+
+POST http://127.0.0.1:8000/auth/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "password": "Changeme!1"
+}
+
+###
+
 POST http://127.0.0.1:8000/owners/
 Content-Type: application/json
 
